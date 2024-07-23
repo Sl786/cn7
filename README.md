@@ -1,3 +1,3 @@
 # cn7
-This experiment has 12 bits in total , i only included our bits ( L O L  😂💀💀) 
+If you have a different experiment  then its not my fault ( L O L  😂💀💀) 
 
