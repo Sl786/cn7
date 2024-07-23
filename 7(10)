@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+
+int main() {
+    struct netent *net_entry;
+    unsigned long net_number;
+    struct in_addr inaddr;
+    
+    // Network number (in host byte order) to retrieve information for
+    const char *net_address = "127.0.0.1";
+    
+    // Convert network address from string to binary form
+    if (inet_pton(AF_INET, net_address, &inaddr) != 1) {
+        perror("inet_pton");
+        exit(EXIT_FAILURE);
+    }
+
+    // Network numbers should be in network byte order for getnetbyaddr
+    net_number = ntohl(inaddr.s_addr);
+
+    // Get network information using network number
+    net_entry = getnetbyaddr(net_number, AF_INET);
+    if (net_entry == NULL) {
+        perror("getnetbyaddr");
+        exit(EXIT_FAILURE);
+    }
+
+    // Display network information
+    printf("Network name: %s\n", net_entry->n_name);
+    printf("Network number (host byte order): %u\n", net_entry->n_net);
+    printf("Network address type: %d\n", net_entry->n_addrtype);
+
+    return 0;
+}
