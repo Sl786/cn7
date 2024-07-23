@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <netdb.h>
+
+int main() {
+    struct netent *net_entry;
+    // Network name to retrieve information for
+    const char *network_name = "loopback";
+
+    // Get network information using network name
+    net_entry = getnetbyname(network_name);
+    if (net_entry == NULL) {
+        perror("getnetbyname");
+        exit(EXIT_FAILURE);
+    }
+
+    // Display network information
+    printf("Network name: %s\n", net_entry->n_name);
+    printf("Network number (host byte order): %u\n", net_entry->n_net);
+    printf("Network address type: %d\n", net_entry->n_addrtype);
+
+    return 0;
+}
