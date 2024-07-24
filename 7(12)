@@ -1,0 +1,26 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <netdb.h> 
+ 
+int main() { 
+    struct servent *serv_entry; 
+ 
+    // Service name and protocol to retrieve information for 
+    const char *service_name = "http"; 
+    const char *protocol_name = "tcp"; 
+ 
+    // Get service information using service name and protocol 
+    serv_entry = getservbyname(service_name, protocol_name); 
+  
+    if (serv_entry == NULL) { 
+        perror("getservbyname"); 
+        exit(EXIT_FAILURE); 
+    } 
+ 
+    // Display service information 
+    printf("Service name: %s\n", serv_entry->s_name); 
+    printf("Port number: %d\n", ntohs(serv_entry->s_port)); 
+    printf("Protocol name: %s\n", serv_entry->s_proto); 
+ 
+    return 0; 
+} 
