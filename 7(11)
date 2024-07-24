@@ -1,0 +1,24 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <netdb.h> 
+ 
+int main() { 
+    struct protoent *proto_entry; 
+ 
+    // Protocol name to retrieve information for 
+    const char *protocol_name = "tcp"; 
+ 
+    // Get protocol information using protocol name 
+    proto_entry = getprotobyname(protocol_name); 
+    if (proto_entry == NULL) { 
+        perror("getprotobyname"); 
+        exit(EXIT_FAILURE); 
+    } 
+ 
+
+    // Display protocol information 
+    printf("Protocol name: %s\n", proto_entry->p_name); 
+    printf("Protocol number: %d\n", proto_entry->p_proto); 
+ 
+    return 0; 
+} 
