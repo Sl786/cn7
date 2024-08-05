@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <errno.h>
+
+int main() {
+    struct hostent *host_entry;
+    const char *domain = "example.com"; // Domain name to resolve
+
+    // Get host information using domain name
+    host_entry = gethostbyname(domain);
+    if (host_entry == NULL) {
+        fprintf(stderr, "gethostbyname: %s\n", hstrerror(h_errno));
+        exit(EXIT_FAILURE);
+    }
+
+    // Display host information
+    printf("Official name: %s\n", host_entry->h_name);
+
+    // Display list of IP addresses
+    printf("IP addresses:\n");
+    for (int i = 0; host_entry->h_addr_list[i] != NULL; i++) {
+        struct in_addr addr;
+        memcpy(&addr, host_entry->h_addr_list[i], sizeof(struct in_addr));
+        printf("%s\n", inet_ntoa(addr));
+    }
+
+    return 0;
+}
