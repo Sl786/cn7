@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <sys/socket.h>
+
+int main() {
+    struct sockaddr_in sa;
+    char host[NI_MAXHOST];
+    char ip_address[INET_ADDRSTRLEN];
+
+    // IP address to resolve
+    const char *ip = "8.8.8.8";
+
+    // Convert IP address from string to binary form
+    if (inet_pton(AF_INET, ip, &sa.sin_addr) != 1) {
+        perror("inet_pton");
+        exit(EXIT_FAILURE);
+    }
+
+    sa.sin_family = AF_INET;
+
+    // Get host information using IP address
+    if (getnameinfo((struct sockaddr *)&sa, sizeof(sa), host, NI_MAXHOST, NULL, 0, 0) != 0) {
+        perror("getnameinfo");
+        exit(EXIT_FAILURE);
+    }
+
+    // Convert IP address to printable string format
+    if (inet_ntop(AF_INET, &sa.sin_addr, ip_address, INET_ADDRSTRLEN) == NULL) {
+        perror("inet_ntop");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Official name: %s\n", host);
+    printf("IP address: %s\n", ip_address);
+
+    return 0;
+}
